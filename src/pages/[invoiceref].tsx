@@ -1,11 +1,21 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useModalControl } from '@/hooks'
-import { PaymentInvoice } from '@/features/invoice'
+import { PaymentInvoice, useInvoiceRef } from '@/features/invoice'
 
 const Invoice: NextPage = () => {
+  const router = useRouter()
+  const { invoiceref } = router.query
+
+  console.log(invoiceref)
+
+  const { data: viewInvoiceData, isLoading: areInvoiceDataLoading } =
+  useInvoiceRef(invoiceref as string);
+
+
   const {
     isModalOpen: isSuccessModalOpen,
     closeModal: closeSuccessModal,
