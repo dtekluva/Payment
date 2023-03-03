@@ -4,7 +4,10 @@ import { useRouter } from 'next/router'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useModalControl } from '@/hooks'
-import { PaymentInvoice, useInvoiceRef } from '@/features/invoice'
+import {
+  PaymentInvoice,
+  //  useInvoiceRef
+} from '@/features/invoice'
 
 const Invoice: NextPage = () => {
   const router = useRouter()
@@ -12,9 +15,8 @@ const Invoice: NextPage = () => {
 
   console.log(invoiceref)
 
-  const { data: viewInvoiceData, isLoading: areInvoiceDataLoading } =
-  useInvoiceRef(invoiceref as string);
-
+  // const { data: viewInvoiceData, isLoading: areInvoiceDataLoading } =
+  // useInvoiceRef(invoiceref as string);
 
   const {
     isModalOpen: isSuccessModalOpen,
