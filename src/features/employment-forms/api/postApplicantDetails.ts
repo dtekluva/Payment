@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 import type { AxiosResponse } from 'axios';
 
-import { employmentAxios } from '@/lib/axios';
+import { businessAxios } from '@/lib/axios';
 import type { ApplicantDetailsDto } from '@/features/employment-forms';
 
 interface ApplicationDetailsParameters {
@@ -13,7 +13,7 @@ const postApplicantDetails = ({
   applicantDetailsDto,
   phoneNumber,
 }: ApplicationDetailsParameters): Promise<AxiosResponse> => {
-  return employmentAxios.post(
+  return businessAxios.post(
     `/salesrep/verify/${phoneNumber}/`,
     applicantDetailsDto,
   );

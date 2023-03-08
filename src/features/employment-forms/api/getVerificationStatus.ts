@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { employmentAxios } from '@/lib/axios';
+import { businessAxios } from '@/lib/axios';
 
 interface VerificationStatus {
   user_verified: boolean;
@@ -9,7 +9,7 @@ interface VerificationStatus {
 export const getVerificationStatus = async (
   phoneNumber: string,
 ): Promise<VerificationStatus> => {
-  const { data } = await employmentAxios.get(
+  const { data } = await businessAxios.get(
     `/salesrep/applicant_verified/${phoneNumber}`,
   );
   return data;

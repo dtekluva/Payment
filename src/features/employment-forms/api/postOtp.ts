@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 import type { AxiosResponse } from 'axios';
 
-import { employmentAxios } from '@/lib/axios';
+import { businessAxios } from '@/lib/axios';
 
 interface PostOtpParameters {
   otpDto: { otp: string };
@@ -12,7 +12,7 @@ const postOtp = ({
   otpDto,
   phoneNumber,
 }: PostOtpParameters): Promise<AxiosResponse> => {
-  return employmentAxios.post(
+  return businessAxios.post(
     `/salesrep/verify/${phoneNumber}/verify/`,
     otpDto,
   );
