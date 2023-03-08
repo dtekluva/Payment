@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
 
 import type { User } from '@/features/auth';
-import { adminAxios } from '@/lib/axios';
+import { businessAxios } from '@/lib/axios';
 
 export const getAuthenticatedUser = async (): Promise<User> => {
-  const { data } = await adminAxios.get('/agency/user/get_user_details/');
+  const { data } = await businessAxios.get('/agency/user/get_user_details/');
   return data;
 };
 

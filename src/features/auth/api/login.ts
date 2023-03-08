@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 import type { AxiosResponse } from 'axios';
 
-import { adminAxios, setAxiosDefaultToken } from '@/lib/axios';
+import { businessAxios, setAxiosDefaultToken } from '@/lib/axios';
 import type { LoginDto } from '@/features/auth';
 import { getAuthenticatedUser, tokenStorage } from '@/features/auth';
 import { useAuth } from '@/contexts/authentication';
@@ -12,7 +12,7 @@ interface TokenResponse {
 }
 
 const login = (loginDto: LoginDto): Promise<AxiosResponse<TokenResponse>> => {
-  return adminAxios.post('/auth_token/jwt/create/', loginDto);
+  return businessAxios.post('/auth_token/jwt/create/', loginDto);
 };
 
 export const useLogin = () => {
@@ -24,7 +24,7 @@ export const useLogin = () => {
       const { access: token } = data;
 
       tokenStorage.setToken(token);
-      setAxiosDefaultToken(token, adminAxios);
+      setAxiosDefaultToken(token, businessAxios);
 
       const user = await getAuthenticatedUser();
 

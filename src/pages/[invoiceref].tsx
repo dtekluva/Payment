@@ -1,22 +1,19 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import moment from 'moment'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useModalControl } from '@/hooks'
-import {
-  PaymentInvoice,
-  //  useInvoiceRef
-} from '@/features/invoice'
+import { PaymentInvoice, useInvoiceRef } from '@/features/invoice'
 
 const Invoice: NextPage = () => {
   const router = useRouter()
   const { invoiceref } = router.query
 
-  console.log(invoiceref)
+  const { data: viewInvoiceData } = useInvoiceRef(invoiceref as string)
 
-  // const { data: viewInvoiceData, isLoading: areInvoiceDataLoading } =
-  // useInvoiceRef(invoiceref as string);
+  console.log(viewInvoiceData)
 
   const {
     isModalOpen: isSuccessModalOpen,
@@ -60,14 +57,13 @@ const Invoice: NextPage = () => {
                         you have a pending payment from
                       </p>
                       <h1 className="mt-[21px] text-[20px] font-semibold text-black ">
-                        Shoprite Lekki
+                        {viewInvoiceData?.branch_address}
                       </h1>
                       <div className="mt-[21px] rounded-lg border border-[#EFAFEB] bg-[#FAE5F9] py-4 px-6 text-2xl text-[#4E00AD]">
-                        <p>₦18,000</p>
+                        <p>₦{viewInvoiceData?.amount}</p>
                       </div>
                       <p className="mt-[21px] text-xs font-medium text-[#4E00AD]">
-                        {' '}
-                        25th September, 2022 at 14:24
+                        {moment(viewInvoiceData?.created_at).format('MMMM Do YYYY, h:mm:ss a')}
                       </p>
                     </div>
 
@@ -94,7 +90,15 @@ const Invoice: NextPage = () => {
           </div>
 
           {/* <EmploymentFormsFooter /> */}
-          <PaymentInvoice isModalOpen={isSuccessModalOpen} closeModal={closeSuccessModal} />
+          <PaymentInvoice
+            isModalOpen={isSuccessModalOpen}
+            closeModal={closeSuccessModal}
+            merchant={viewInvoiceData?.merchant?.company_name}
+            branch={viewInvoiceData?.branch_name}
+            amount={viewInvoiceData?.amount}
+            date_initiated={moment(viewInvoiceData?.created_at).format('MMMM Do YYYY, h:mm:ss a')}
+            time={moment(viewInvoiceData?.created_at).format('h:mm:ss a')}
+          />
         </div>
       </div>
     </>

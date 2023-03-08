@@ -6,11 +6,21 @@ import { Modal, Button } from '@/components/elements'
 interface ModalResolveDisputeProps {
   closeModal: () => void
   isModalOpen: boolean
+  merchant: string;
+  branch: string;
+  amount: string;
+  date_initiated: string;
+  time: string;
 }
 
 export const PaymentInvoice: React.FunctionComponent<ModalResolveDisputeProps> = ({
   isModalOpen,
   closeModal,
+  amount,
+  branch,
+  date_initiated,
+  merchant,
+  time
 }) => {
   return (
     <>
@@ -43,7 +53,7 @@ export const PaymentInvoice: React.FunctionComponent<ModalResolveDisputeProps> =
                 className="text-lg font-medium 
             text-[#505F79]"
               >
-                Merchant: <span className="text-[#4E00AD]">Shoprite</span>
+                Merchant: <span className="text-[#4E00AD]">{merchant}</span>
               </p>
               <div
                 className="mt-2 w-full border border-dashed border-[#C7AFE4]
@@ -56,7 +66,7 @@ export const PaymentInvoice: React.FunctionComponent<ModalResolveDisputeProps> =
                 className="text-lg font-medium 
             text-[#505F79]"
               >
-                Branch: <span className="text-[#4E00AD]">Shoprite</span>
+                Branch: <span className="text-[#4E00AD]">{branch}</span>
               </p>
               <div
                 className="mt-2 w-full border border-dashed border-[#C7AFE4]
@@ -69,7 +79,7 @@ export const PaymentInvoice: React.FunctionComponent<ModalResolveDisputeProps> =
                 className="text-lg font-medium 
             text-[#505F79]"
               >
-                Amount: <span className="text-[#4E00AD]">Shoprite</span>
+                Amount: <span className="text-[#4E00AD]">{amount}</span>
               </p>
               <div
                 className="mt-2 w-full border border-dashed border-[#C7AFE4]
@@ -82,7 +92,7 @@ export const PaymentInvoice: React.FunctionComponent<ModalResolveDisputeProps> =
                 className="text-lg font-medium 
             text-[#505F79]"
               >
-                Date initiated: <span className="text-[#4E00AD]">Shoprite</span>
+                Date initiated: <span className="text-[#4E00AD]">{date_initiated}</span>
               </p>
               <div
                 className="mt-2 w-full border border-dashed border-[#C7AFE4]
@@ -95,7 +105,7 @@ export const PaymentInvoice: React.FunctionComponent<ModalResolveDisputeProps> =
                 className="text-lg font-medium 
             text-[#505F79]"
               >
-                Time: <span className="text-[#4E00AD]">Shoprite</span>
+                Time: <span className="text-[#4E00AD]">{time}</span>
               </p>
               <div
                 className="mt-2 w-full border border-dashed border-[#C7AFE4]
