@@ -23,7 +23,7 @@ const Invoice: NextPage = () => {
 
   return (
     <>
-      <div className="h-screen w-full bg-[#4d00ac]">
+      <div className="h-full w-full bg-[#4d00ac] md:overflow-hidden">
         <div className="mx-auto h-screen w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
           <EmploymentFormsHeader />
           <div className="h-full xl:flex xl:justify-evenly">
