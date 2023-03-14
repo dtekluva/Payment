@@ -1,3 +1,5 @@
+'use client'
+import * as React from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -6,6 +8,7 @@ import moment from 'moment'
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useModalControl } from '@/hooks'
 import { PaymentInvoice, useInvoiceRef } from '@/features/invoice'
+// import { formatShortDateTime } from '@/utils'
 
 const Invoice: NextPage = () => {
   const router = useRouter()
@@ -13,13 +16,12 @@ const Invoice: NextPage = () => {
 
   const { data: viewInvoiceData } = useInvoiceRef(invoiceref as string)
 
-  console.log(viewInvoiceData)
-
   const {
     isModalOpen: isSuccessModalOpen,
     closeModal: closeSuccessModal,
     openModal: openSuccessModal,
   } = useModalControl()
+
 
   return (
     <>
@@ -31,18 +33,7 @@ const Invoice: NextPage = () => {
               <div className="mx-auto  w-full  bg-[#F9FBFF]">
                 {' '}
                 <div className="">
-                  {/* {isPostPosApplicationFormLoading && <FullPageLoader />} */}
-
-                  {/* <div className="flex h-full w-full flex-col items-center justify-center px-5 pt-16 pb-5 md:mb-[89px] md:px-16 md:pt-[106px]">
-                    <h1 className="mb-4 font-sans text-2xl font-semibold text-employment-blue-light md:mb-6 md:text-[33px]">
-                      Input your email to continue
-                    </h1>
-                    <p className="max-w-[732px] font-sans font-normal text-[#646464] md:text-[19px]">
-                      POS Registration Form. Please note that the POS is not for sale. However, a
-                      caution fee will be required. The POS remains the property of the issuing
-                      company but after 2 years of active use, the ownership will be transferred.
-                    </p>
-                  </div> */}
+ 
                   <div className="mt-4 flex h-full max-h-[800px] w-full flex-col items-start justify-start px-4">
                     <h1 className="font-sans text-[18px] font-semibold text-[#4E00AD] md:text-[33px]">
                       Hello!
@@ -57,13 +48,14 @@ const Invoice: NextPage = () => {
                         you have a pending payment from
                       </p>
                       <h1 className="mt-[21px] text-[20px] font-semibold text-black ">
-                        {viewInvoiceData?.branch_address}
+                        {viewInvoiceData?.merchant?.company_name}
                       </h1>
                       <div className="mt-[21px] rounded-lg border border-[#EFAFEB] bg-[#FAE5F9] py-4 px-6 text-2xl text-[#4E00AD]">
                         <p>₦{viewInvoiceData?.amount}</p>
                       </div>
                       <p className="mt-[21px] text-xs font-medium text-[#4E00AD]">
                         {moment(viewInvoiceData?.created_at).format('MMMM Do YYYY, h:mm:ss a')}
+                        {/* {formatShortDateTime(viewInvoiceData?.created_at, true)} */}
                       </p>
                     </div>
 
@@ -75,10 +67,12 @@ const Invoice: NextPage = () => {
                         View More
                       </button>
                     </div>
-                    <Link href="/card-details">
+                    {/* <Link href="/card-details"> */}
+                    <Link href="/saved-cards">
                       <button
-                        type="submit"
+                        type="button"
                         className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
+                        onClick={() => router.push(`/cards/${invoiceref}`)}
                       >
                         Make payment
                       </button>

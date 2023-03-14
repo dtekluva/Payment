@@ -1,13 +1,20 @@
 import type { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { usePaystackPayment } from 'react-paystack'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import { InputError, InputField } from '@/components/elements'
+import { useInvoiceRef } from '@/features/invoice'
 
 const CardDetails: NextPage = () => {
   const router = useRouter()
+  const { carddetails } = router.query
+
+  const { data: viewInvoiceData } = useInvoiceRef(carddetails as string)
+
+  console.log(viewInvoiceData?.amount, '')
 
   type SendMessageDto = {
     email: string
@@ -24,10 +31,59 @@ const CardDetails: NextPage = () => {
   } = useForm<SendMessageDto>({
     mode: 'onTouched',
   })
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: viewInvoiceData?.client_email,
+    amount: viewInvoiceData?.amount * 100,
+    publicKey: 'pk_live_c2948535846ef1012400bfeabf45ab02fe350e8c',
+    currency: 'NGN',
+    channel: ['card'],
+    metadata: {
+      reason: '',
+      source: 'web',
+    },
+  }
+
+  // you can call this function anything
+  const onSuccess = (reference: unknown) => {
+    console.log(reference)
+  }
+
+  // you can call this function anything
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log('closed')
+    // alert("Test Redirect")
+  }
+
+  const PaystackPaymentHook = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
+    const initializePayment = usePaystackPayment(config)
+
+    return (
+      <div className="w-full">
+        <button
+          onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            initializePayment(onSuccess, onClose)
+          }}
+          type="button"
+          className="focus:ring-wise-purple-light disabled:opacity-60' hover:bg-green-10 mt-8 w-full space-x-2 rounded-xl bg-[#4D00AC] px-16 py-[13px] text-center text-xl font-medium text-white transition duration-500 ease-in-out hover:scale-[1.02] focus:outline-none focus:ring-2
+          focus:ring-green-500 focus:ring-opacity-30 focus:ring-offset-2 focus:ring-offset-white active:scale-[0.95] disabled:scale-100 disabled:cursor-not-allowed"
+        >
+          Continue
+        </button>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
-        <div className="mx-auto h-screen w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
+        <div className="mx-auto h-full w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff] pb-8">
           <EmploymentFormsHeader />
           <div className="h-full xl:flex xl:justify-evenly">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">
@@ -35,17 +91,6 @@ const CardDetails: NextPage = () => {
                 {' '}
                 <div className="">
                   {/* {isPostPosApplicationFormLoading && <FullPageLoader />} */}
-
-                  {/* <div className="flex h-full w-full flex-col items-center justify-center px-5 pt-16 pb-5 md:mb-[89px] md:px-16 md:pt-[106px]">
-                    <h1 className="mb-4 font-sans text-2xl font-semibold text-employment-blue-light md:mb-6 md:text-[33px]">
-                      Input your email to continue
-                    </h1>
-                    <p className="max-w-[732px] font-sans font-normal text-[#646464] md:text-[19px]">
-                      POS Registration Form. Please note that the POS is not for sale. However, a
-                      caution fee will be required. The POS remains the property of the issuing
-                      company but after 2 years of active use, the ownership will be transferred.
-                    </p>
-                  </div> */}
 
                   <form action="">
                     <div className="mt-4 flex h-full max-h-[800px] w-full flex-col items-start justify-start px-4">
@@ -163,14 +208,16 @@ const CardDetails: NextPage = () => {
                         )}
                       </div>
 
-                      <Link href="/create-pin">
+                      {/* <Link href="/create-pin">
                         <button
                           type="submit"
                           className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
                         >
                           Continue
                         </button>
-                      </Link>
+                      </Link> */}
+
+                      <PaystackPaymentHook />
                     </div>
                   </form>
                 </div>

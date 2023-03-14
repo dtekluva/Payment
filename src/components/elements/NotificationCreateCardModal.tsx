@@ -12,9 +12,10 @@ interface NotificationModalProps {
   width?: string
   className?: string
   allowDismiss?: boolean
+  invoiceReferenece?: string
 }
 
-export const NotificationModal: React.FunctionComponent<NotificationModalProps> = ({
+export const NotificationCreateCardModal: React.FunctionComponent<NotificationModalProps> = ({
   headingText,
   type,
   isModalOpen,
@@ -23,15 +24,12 @@ export const NotificationModal: React.FunctionComponent<NotificationModalProps> 
   className = '',
   closeModal,
   allowDismiss = false,
+  invoiceReferenece,
 }) => {
   const router = useRouter()
 
   const handleClickResponse = () => {
-    if (type === 'success') {
-      router.push('/otp-pin')
-    } else {
-      closeModal()
-    }
+    router.push(`/create-card/${invoiceReferenece}`)
   }
   return (
     <DialogOverlay

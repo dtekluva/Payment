@@ -3,104 +3,30 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'MarkPro';
-  src: url('/fonts/MarkPro-Bold.eot');
-  src: url('/fonts/MarkPro-Bold.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/MarkPro-Bold.woff2') format('woff2'), url('/fonts/MarkPro-Bold.woff') format('woff'),
-    url('/fonts/MarkPro-Bold.ttf') format('truetype');
+  font-family: 'Inter';
+  src: url('/public/fonts/Inter-Bold.ttf') format('truetype');
   font-weight: 700;
   font-display: swap;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'MarkPro';
-  src: url('/fonts/MarkPro-Medium.eot');
-  src: url('/fonts/MarkPro-Medium.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/MarkPro-Medium.woff2') format('woff2'),
-    url('/fonts/MarkPro-Medium.woff') format('woff'),
-    url('/fonts/MarkPro-Medium.ttf') format('truetype');
-  font-weight: 600;
+  font-family: 'Inter';
+  src: url('/public/fonts/Inter-ExtraBold.ttf') format('truetype');
+  font-weight: 900;
   font-display: swap;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'MarkPro';
-  src: url('/fonts/MarkPro-Book.eot');
-  src: url('/fonts/MarkPro-Book.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/MarkPro-Book.woff2') format('woff2'), url('/fonts/MarkPro-Book.woff') format('woff'),
-    url('/fonts/MarkPro-Book.ttf') format('truetype');
+  font-family: 'Inter';
+  src: url('/public/fonts/Inter-Medium.ttf') format('truetype');
   font-weight: 500;
   font-display: swap;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'MarkPro';
-  src: url('/fonts/MarkPro.eot');
-  src: url('/fonts/MarkPro.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/MarkPro.woff2') format('woff2'), url('/fonts/MarkPro.woff') format('woff'),
-    url('/fonts/MarkPro.ttf') format('truetype');
-  font-weight: 400;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/Poppins-Bold.eot');
-  src: url('/fonts/Poppins-Bold.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/Poppins-Bold.woff2') format('woff2'), url('/fonts/Poppins-Bold.woff') format('woff'),
-    url('/fonts/Poppins-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/Poppins-SemiBold.eot');
-  src: url('/fonts/Poppins-SemiBold.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/Poppins-SemiBold.woff2') format('woff2'),
-    url('/fonts/Poppins-SemiBold.woff') format('woff'),
-    url('/fonts/Poppins-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('/fonts/Poppins.eot');
-  src: url('/fonts/Poppins.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/Poppins.woff2') format('woff2'), url('/fonts/Poppins.woff') format('woff'),
-    url('/fonts/Poppins.ttf') format('truetype');
-  font-weight: 400;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'DMSans';
-  src: url('/fonts/DMSans-Bold.eot');
-  src: url('/fonts/DMSans-Bold.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/DMSans-Bold.woff2') format('woff2'),
-    url('/fonts/DMSans-Bold.woff') format('woff'),
-    url('/fonts/DMSans-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'DMSans';
-  src: url('/fonts/DMSans-Medium.eot');
-  src: url('/fonts/DMSans-Medium.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/DMSans-Medium.woff2') format('woff2'),
-    url('/fonts/DMSans-Medium.woff') format('woff'),
-    url('/fonts/DMSans-Medium.ttf') format('truetype');
-  font-weight: 500;
+  font-family: 'Inter';
+  src: url('/public/fonts/Inter-Regular.ttf') format('truetype');
+  font-weight: 300;
   font-display: swap;
   font-style: normal;
 }
