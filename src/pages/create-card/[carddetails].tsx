@@ -1,11 +1,9 @@
 import type { NextPage } from 'next'
-import { useForm } from 'react-hook-form'
 // import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { usePaystackPayment } from 'react-paystack'
 
 import { EmploymentFormsHeader } from '@/components/layout'
-import { InputError, InputField } from '@/components/elements'
 import { useInvoiceRef } from '@/features/invoice'
 
 const CardDetails: NextPage = () => {
@@ -14,28 +12,12 @@ const CardDetails: NextPage = () => {
 
   const { data: viewInvoiceData } = useInvoiceRef(carddetails as string)
 
-  console.log(viewInvoiceData?.amount, '')
-
-  type SendMessageDto = {
-    email: string
-    card_number: string
-    cvv: string
-    exp_date: string
-    card_label: string
-  }
-
-  const {
-    register,
-    // handleSubmit,
-    formState: { errors },
-  } = useForm<SendMessageDto>({
-    mode: 'onTouched',
-  })
+  console.log(viewInvoiceData?.client_email, '')
 
   const config = {
     reference: new Date().getTime().toString(),
     email: viewInvoiceData?.client_email,
-    amount: viewInvoiceData?.amount * 100,
+    amount: viewInvoiceData?.billed_amount * 100,
     publicKey: 'pk_live_c2948535846ef1012400bfeabf45ab02fe350e8c',
     currency: 'NGN',
     channel: ['card'],
@@ -48,6 +30,7 @@ const CardDetails: NextPage = () => {
   // you can call this function anything
   const onSuccess = (reference: unknown) => {
     console.log(reference)
+    router.push('/create-pin')
   }
 
   // you can call this function anything
@@ -130,92 +113,6 @@ const CardDetails: NextPage = () => {
                         Verify that the cardholder&apos;s name and other information are exactly as
                         it appears on the card.
                       </p>
-
-                      <div className="mt-6 w-full">
-                        <InputField
-                          autoFocus={true}
-                          id="cardnumber"
-                          type="text"
-                          label="Card number"
-                          placeholder="Card number"
-                          className="h-12 rounded-lg border-2 border-[#E0E0E0] bg-[#E2E6EE]"
-                          registration={register('card_number', {
-                            required: true,
-                          })}
-                        />
-                        {errors.card_number && (
-                          <InputError
-                            text={errors.card_number.message || 'This field is required'}
-                          />
-                        )}
-                      </div>
-
-                      <div className="mt-5 flex w-full items-center gap-5">
-                        <div className="basis-1/2">
-                          {' '}
-                          <InputField
-                            autoFocus={true}
-                            id="cardnumber"
-                            type="text"
-                            label="Exp. date"
-                            placeholder="Exp.date"
-                            className="h-12 rounded-lg border-2 border-[#E0E0E0] bg-[#E2E6EE]"
-                            registration={register('exp_date', {
-                              required: true,
-                            })}
-                          />
-                          {errors.exp_date && (
-                            <InputError
-                              text={errors.exp_date.message || 'This field is required'}
-                            />
-                          )}
-                        </div>
-                        <div className="basis-1/2">
-                          {' '}
-                          <InputField
-                            autoFocus={true}
-                            id="cardnumber"
-                            type="text"
-                            label="CVV"
-                            placeholder="CVV"
-                            className="h-12 rounded-lg border-2 border-[#E0E0E0] bg-[#E2E6EE]"
-                            registration={register('cvv', {
-                              required: true,
-                            })}
-                          />
-                          {errors.cvv && (
-                            <InputError text={errors.cvv.message || 'This field is required'} />
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="mt-6 w-full">
-                        <InputField
-                          autoFocus={true}
-                          id="prefCard"
-                          type="text"
-                          label="Preferred Card Label"
-                          placeholder="Preferred Card Label"
-                          className="h-12 rounded-lg border-2 border-[#E0E0E0] bg-[#E2E6EE]"
-                          registration={register('card_number', {
-                            required: true,
-                          })}
-                        />
-                        {errors.card_number && (
-                          <InputError
-                            text={errors.card_number.message || 'This field is required'}
-                          />
-                        )}
-                      </div>
-
-                      {/* <Link href="/create-pin">
-                        <button
-                          type="submit"
-                          className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
-                        >
-                          Continue
-                        </button>
-                      </Link> */}
 
                       <PaystackPaymentHook />
                     </div>

@@ -15,13 +15,13 @@ const Invoice: NextPage = () => {
   const { invoiceref } = router.query
 
   const { data: viewInvoiceData } = useInvoiceRef(invoiceref as string)
+  console.log(viewInvoiceData, 'ksmjladkj')
 
   const {
     isModalOpen: isSuccessModalOpen,
     closeModal: closeSuccessModal,
     openModal: openSuccessModal,
   } = useModalControl()
-
 
   return (
     <>
@@ -33,7 +33,6 @@ const Invoice: NextPage = () => {
               <div className="mx-auto  w-full  bg-[#F9FBFF]">
                 {' '}
                 <div className="">
- 
                   <div className="mt-4 flex h-full max-h-[800px] w-full flex-col items-start justify-start px-4">
                     <h1 className="font-sans text-[18px] font-semibold text-[#4E00AD] md:text-[33px]">
                       Hello!

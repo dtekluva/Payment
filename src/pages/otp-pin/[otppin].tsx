@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useOtpPin } from '@/features/otpPin'
 import { useNotificationModalControl } from '@/hooks'
-import { NotificationCreateCardModal } from '@/components/elements'
+import { NotificationCreateCardModal, NotificationSavedCardModal } from '@/components/elements'
 
 const ConfirmPin: NextPage = () => {
   const router = useRouter()
@@ -17,6 +17,13 @@ const ConfirmPin: NextPage = () => {
     isModalOpen: isSuccessModalOpen,
     closeModal: closeSuccessModal,
     openModal: openSuccessModal,
+  } = useNotificationModalControl()
+
+  const {
+    message: successSavedCardModalMessage,
+    isModalOpen: isSuccessSavedCardModalOpen,
+    closeModal: closeSuccessSavedCardModal,
+    openModal: openSuccessSavedCardModal,
   } = useNotificationModalControl()
 
   const [otpToken, setOtpToken] = React.useState('')
@@ -35,8 +42,10 @@ const ConfirmPin: NextPage = () => {
   React.useEffect(() => {
     if (viewCards?.length == 0) {
       openSuccessModal("You don't have any cards saved, click to create card...")
+    } else if (viewCards?.length >= 1) {
+      openSuccessSavedCardModal('Your account has been verified...')
     }
-  }, [openSuccessModal, viewCards?.length])
+  }, [openSuccessModal, openSuccessSavedCardModal, otpToken, otppin, router, viewCards?.length])
 
   return (
     <>
@@ -48,6 +57,16 @@ const ConfirmPin: NextPage = () => {
         closeModal={closeSuccessModal}
         isModalOpen={isSuccessModalOpen}
         invoiceReferenece={otppin as string}
+      />
+      <NotificationSavedCardModal
+        headingText={successSavedCardModalMessage}
+        label={successSavedCardModalMessage}
+        type="success"
+        allowDismiss
+        closeModal={closeSuccessSavedCardModal}
+        isModalOpen={isSuccessSavedCardModalOpen}
+        invoiceReferenece={otppin as string}
+        otpToken={otpToken}
       />
 
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
