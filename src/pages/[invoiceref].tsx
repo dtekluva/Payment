@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { useRouter } from 'next/router'
 import moment from 'moment'
 
@@ -67,15 +67,13 @@ const Invoice: NextPage = () => {
                       </button>
                     </div>
                     {/* <Link href="/card-details"> */}
-                    <Link href="/saved-cards">
-                      <button
-                        type="button"
-                        className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
-                        onClick={() => router.push(`/cards/${invoiceref}`)}
-                      >
-                        Make payment
-                      </button>
-                    </Link>
+                    <button
+                      type="button"
+                      className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
+                      onClick={() => router.push(`/cards/${invoiceref}`)}
+                    >
+                      Make payment
+                    </button>
                   </div>
                 </div>
               </div>

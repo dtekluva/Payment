@@ -1,16 +1,28 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import PinInput from 'react-pin-input'
 import { useRouter } from 'next/router'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import type { AxiosError } from 'axios'
 
 import { EmploymentFormsHeader } from '@/components/layout'
-import { useOtpPin } from '@/features/otpPin'
+import PinInput from 'react-pin-input'
+import { usePostCardPayment } from '@/features/card-payment'
+import { NotificationModalPayment } from '@/components/elements'
 import { useNotificationModalControl } from '@/hooks'
-import { NotificationCreateCardModal, NotificationSavedCardModal } from '@/components/elements'
+import { formatAxiosErrorMessage } from '@/utils'
 
-const ConfirmPin: NextPage = () => {
+type FormValues = {
+  transaction_ref: string
+  card_id: string
+  transaction_pin: string
+}
+
+const CreatePin: NextPage = () => {
   const router = useRouter()
-  const { otppin } = router.query
+  const { paymentpin = [] } = router.query
+
+  const invoiceReferenece = paymentpin[0]
+  const cardid = paymentpin[1]
 
   const {
     message: successModalMessage,
@@ -20,54 +32,67 @@ const ConfirmPin: NextPage = () => {
   } = useNotificationModalControl()
 
   const {
-    message: successSavedCardModalMessage,
-    isModalOpen: isSuccessSavedCardModalOpen,
-    closeModal: closeSuccessSavedCardModal,
-    openModal: openSuccessSavedCardModal,
+    message: errorModalMessage,
+    isModalOpen: isErrorModalOpen,
+    closeModal: closeErrorModal,
+    openModal: openErrorModal,
   } = useNotificationModalControl()
 
-  const [otpToken, setOtpToken] = React.useState('')
+  const [password, setPassword] = React.useState('')
 
   const handleChange = (value: string) => {
-    console.log(value, 'change')
+    console.log(value)
   }
-
   const handleComplete = (value: string) => {
-    setOtpToken(value)
+    setPassword(value)
   }
 
-  const { data: viewCards } = useOtpPin(otppin as string, otpToken)
-  console.log(viewCards, 'view cards')
+  const { handleSubmit, reset } = useForm<FormValues>({})
 
-  React.useEffect(() => {
-    if (viewCards?.length == 0) {
-      openSuccessModal("You don't have any cards saved, click to create card...")
-    } else if (viewCards?.length >= 1) {
-      openSuccessSavedCardModal('Your account has been verified...')
+  const { mutate: postCardPayment } = usePostCardPayment()
+
+  console.log()
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const updatedData = {
+      ...data,
+      transaction_ref: invoiceReferenece,
+      transaction_pin: password,
+      card_id: cardid,
     }
-  }, [openSuccessModal, openSuccessSavedCardModal, otpToken, otppin, router, viewCards?.length])
+
+    postCardPayment(updatedData, {
+      onSuccess: ({ data: getMessage }) => {
+        openSuccessModal(getMessage.message)
+        // router.push('/transaction-success')
+        reset()
+      },
+      onError: (error) => {
+        console.log(error)
+        const errorMessage = formatAxiosErrorMessage(error as AxiosError)
+        // launchNotification('error', errorMessage as string)
+
+        openErrorModal(errorMessage as string)
+      },
+    })
+  }
 
   return (
     <>
-      <NotificationCreateCardModal
+      <NotificationModalPayment
         headingText={successModalMessage}
         label={successModalMessage}
         type="success"
         allowDismiss
         closeModal={closeSuccessModal}
         isModalOpen={isSuccessModalOpen}
-        invoiceReferenece={otppin as string}
-        otpToken={otpToken}
       />
-      <NotificationSavedCardModal
-        headingText={successSavedCardModalMessage}
-        label={successSavedCardModalMessage}
-        type="success"
+      <NotificationModalPayment
+        headingText={errorModalMessage}
+        label={errorModalMessage}
+        type="error"
         allowDismiss
-        closeModal={closeSuccessSavedCardModal}
-        isModalOpen={isSuccessSavedCardModalOpen}
-        invoiceReferenece={otppin as string}
-        otpToken={otpToken}
+        closeModal={closeErrorModal}
+        isModalOpen={isErrorModalOpen}
       />
 
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
@@ -79,19 +104,19 @@ const ConfirmPin: NextPage = () => {
                 {' '}
                 <div className="">
                   {/* {isPostPosApplicationFormLoading && <FullPageLoader />} */}
-
-                  <form action="">
+                  <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
                     <div className="mt-4 flex h-full max-h-[800px] w-full flex-col items-start justify-start px-4">
                       <h1 className=" mt-6 font-sans text-[18px] font-semibold text-black md:mb-6 md:text-[33px]">
-                        Enter OTP PIN
+                        Finally, create your transaction PIN
                       </h1>
                       <p className="mt-2 font-sans text-[13px] font-medium text-[#172B4D] ">
-                        Kindly enter OTP pin to continue transaction
+                        For a quick transaction, create a 4-digit transactional pin to approve every
+                        transaction on the platform.
                       </p>
 
                       <div className="mt-6 flex w-full items-center justify-center">
                         <PinInput
-                          length={6}
+                          length={4}
                           initialValue="o"
                           onChange={handleChange}
                           type="numeric"
@@ -102,8 +127,6 @@ const ConfirmPin: NextPage = () => {
                             background: '#E2E6EE',
                             borderRadius: '8px',
                             borderColor: 'Transparent',
-                            width: '40px',
-                            height: '40px',
                           }}
                           inputFocusStyle={{ borderColor: 'Transparent' }}
                           onComplete={handleComplete}
@@ -111,13 +134,14 @@ const ConfirmPin: NextPage = () => {
                         />
                       </div>
 
-                      {/* <Link href="/transaction-success"> */}
+                      {/* <Link href="/confirm-pin"> */}
                       <button
                         type="submit"
                         className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
                       >
                         Continue
                       </button>
+                      {/* </Link> */}
                     </div>
                   </form>
                 </div>
@@ -132,4 +156,4 @@ const ConfirmPin: NextPage = () => {
   )
 }
 
-export default ConfirmPin
+export default CreatePin

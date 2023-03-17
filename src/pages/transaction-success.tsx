@@ -69,7 +69,7 @@ const TransactionSuccess: NextPage = () => {
                     </div>
 
                     <div className="mt-20"></div>
-                    <Link href="/card-details">
+                    <Link href="/downloadapp">
                       <button
                         type="submit"
                         className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"

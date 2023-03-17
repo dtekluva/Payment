@@ -2,14 +2,13 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useInvoiceRef } from '@/features/invoice'
 import { usePostEmail } from '@/features/email'
-import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNotificationModalControl } from '@/hooks'
-import { NotificationModalOtp } from '@/components/elements'
+import { NotificationModalOtp, NotificationAddNewModalOtp } from '@/components/elements'
 
 type FormValues = {
   email: string
@@ -24,6 +23,13 @@ const SavedCards: NextPage = () => {
     isModalOpen: isSuccessModalOpen,
     closeModal: closeSuccessModal,
     openModal: openSuccessModal,
+  } = useNotificationModalControl()
+
+  const {
+    message: successNewCardModalMessage,
+    isModalOpen: isSuccessNewCardModalOpen,
+    closeModal: closeSuccessNewCardModal,
+    openModal: openSuccessNewCardModal,
   } = useNotificationModalControl()
 
   const { data: viewInvoiceData } = useInvoiceRef(savedcards as string)
@@ -45,6 +51,20 @@ const SavedCards: NextPage = () => {
     })
   }
 
+  const onAddCardSubmit: SubmitHandler<FormValues> = (data) => {
+    const updatedData = {
+      ...data,
+      email: viewInvoiceData?.client_email,
+    }
+
+    postEmail(updatedData, {
+      onSuccess: ({ data: getMessage }) => {
+        openSuccessNewCardModal(getMessage.message)
+        reset()
+      },
+    })
+  }
+
   return (
     <>
       <NotificationModalOtp
@@ -54,6 +74,15 @@ const SavedCards: NextPage = () => {
         allowDismiss
         closeModal={closeSuccessModal}
         isModalOpen={isSuccessModalOpen}
+        invoiceReferenece={savedcards as string}
+      />
+      <NotificationAddNewModalOtp
+        headingText={successNewCardModalMessage}
+        label={successNewCardModalMessage}
+        type="success"
+        allowDismiss
+        closeModal={closeSuccessNewCardModal}
+        isModalOpen={isSuccessNewCardModalOpen}
         invoiceReferenece={savedcards as string}
       />
 
@@ -71,7 +100,7 @@ const SavedCards: NextPage = () => {
                     </h1>
 
                     <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-                      <button className="mt-4 flex w-full items-center justify-between px-4">
+                      <button className="mt-4 flex w-full items-center gap-6 px-4">
                         <svg
                           width="40"
                           height="32"
@@ -111,38 +140,40 @@ const SavedCards: NextPage = () => {
                         </svg>
                         <div>
                           <p className="text-left text-base font-medium text-black">
-                            One card saved
+                            Use Saved Card
                           </p>
                           <p className="text-[13px] font-medium text-black">
                             Select from saved cards
                           </p>
                         </div>
-                        <svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <rect
-                            x="32"
-                            y="32"
+                        <div className="ml-8">
+                          <svg
                             width="32"
                             height="32"
-                            rx="16"
-                            transform="rotate(180 32 32)"
-                            fill="#FAE5F9"
-                          />
-                          <path
-                            d="M9 16.9999L19 16.9999L15.71 20.2899C15.6163 20.3829 15.5419 20.4935 15.4911 20.6154C15.4403 20.7372 15.4142 20.8679 15.4142 20.9999C15.4142 21.132 15.4403 21.2627 15.4911 21.3845C15.5419 21.5064 15.6163 21.617 15.71 21.7099C15.8974 21.8962 16.1508 22.0007 16.415 22.0007C16.6792 22.0007 16.9326 21.8962 17.12 21.7099L21.41 17.4099C21.7856 17.0366 21.9978 16.5295 22 15.9999C21.9951 15.4738 21.7832 14.9708 21.41 14.5999L17.12 10.3C17.0268 10.2074 16.9162 10.1341 16.7946 10.0842C16.6731 10.0344 16.5429 10.0089 16.4115 10.0094C16.2801 10.0099 16.1501 10.0362 16.0288 10.0869C15.9076 10.1376 15.7976 10.2117 15.705 10.305C15.6124 10.3982 15.5391 10.5088 15.4893 10.6303C15.4394 10.7519 15.414 10.8821 15.4144 11.0135C15.4149 11.1449 15.4412 11.2749 15.492 11.3961C15.5427 11.5173 15.6168 11.6274 15.71 11.72L19 14.9999L9 14.9999C8.73478 14.9999 8.48043 15.1053 8.29289 15.2928C8.10536 15.4804 8 15.7347 8 15.9999C8 16.2652 8.10536 16.5195 8.29289 16.7071C8.48043 16.8946 8.73478 16.9999 9 16.9999Z"
-                            fill="#CC00C1"
-                          />
-                        </svg>
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="32"
+                              y="32"
+                              width="32"
+                              height="32"
+                              rx="16"
+                              transform="rotate(180 32 32)"
+                              fill="#FAE5F9"
+                            />
+                            <path
+                              d="M9 16.9999L19 16.9999L15.71 20.2899C15.6163 20.3829 15.5419 20.4935 15.4911 20.6154C15.4403 20.7372 15.4142 20.8679 15.4142 20.9999C15.4142 21.132 15.4403 21.2627 15.4911 21.3845C15.5419 21.5064 15.6163 21.617 15.71 21.7099C15.8974 21.8962 16.1508 22.0007 16.415 22.0007C16.6792 22.0007 16.9326 21.8962 17.12 21.7099L21.41 17.4099C21.7856 17.0366 21.9978 16.5295 22 15.9999C21.9951 15.4738 21.7832 14.9708 21.41 14.5999L17.12 10.3C17.0268 10.2074 16.9162 10.1341 16.7946 10.0842C16.6731 10.0344 16.5429 10.0089 16.4115 10.0094C16.2801 10.0099 16.1501 10.0362 16.0288 10.0869C15.9076 10.1376 15.7976 10.2117 15.705 10.305C15.6124 10.3982 15.5391 10.5088 15.4893 10.6303C15.4394 10.7519 15.414 10.8821 15.4144 11.0135C15.4149 11.1449 15.4412 11.2749 15.492 11.3961C15.5427 11.5173 15.6168 11.6274 15.71 11.72L19 14.9999L9 14.9999C8.73478 14.9999 8.48043 15.1053 8.29289 15.2928C8.10536 15.4804 8 15.7347 8 15.9999C8 16.2652 8.10536 16.5195 8.29289 16.7071C8.48043 16.8946 8.73478 16.9999 9 16.9999Z"
+                              fill="#CC00C1"
+                            />
+                          </svg>
+                        </div>
                       </button>
                     </form>
 
-                    <Link href={`/create-card/${savedcards}`}>
-                      <div className="mt-8 flex w-full items-center justify-between px-4">
+                    <form className="w-full" onSubmit={handleSubmit(onAddCardSubmit)}>
+                      <button className="mt-8 flex w-full items-center gap-6 px-4 text-left">
                         <svg
                           width="40"
                           height="32"
@@ -174,32 +205,36 @@ const SavedCards: NextPage = () => {
                         </svg>
 
                         <div>
-                          <p className="text-base font-medium text-black">Add a new debit card</p>
+                          <p className="text-base font-medium text-black">New Debit Card</p>
                           <p className="text-[13px] font-medium text-black">Pay with a new card</p>
                         </div>
-                        <svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <rect
-                            x="32"
-                            y="32"
+                        <div className="ml-14">
+                          <svg
                             width="32"
                             height="32"
-                            rx="16"
-                            transform="rotate(180 32 32)"
-                            fill="#FAE5F9"
-                          />
-                          <path
-                            d="M9 16.9999L19 16.9999L15.71 20.2899C15.6163 20.3829 15.5419 20.4935 15.4911 20.6154C15.4403 20.7372 15.4142 20.8679 15.4142 20.9999C15.4142 21.132 15.4403 21.2627 15.4911 21.3845C15.5419 21.5064 15.6163 21.617 15.71 21.7099C15.8974 21.8962 16.1508 22.0007 16.415 22.0007C16.6792 22.0007 16.9326 21.8962 17.12 21.7099L21.41 17.4099C21.7856 17.0366 21.9978 16.5295 22 15.9999C21.9951 15.4738 21.7832 14.9708 21.41 14.5999L17.12 10.3C17.0268 10.2074 16.9162 10.1341 16.7946 10.0842C16.6731 10.0344 16.5429 10.0089 16.4115 10.0094C16.2801 10.0099 16.1501 10.0362 16.0288 10.0869C15.9076 10.1376 15.7976 10.2117 15.705 10.305C15.6124 10.3982 15.5391 10.5088 15.4893 10.6303C15.4394 10.7519 15.414 10.8821 15.4144 11.0135C15.4149 11.1449 15.4412 11.2749 15.492 11.3961C15.5427 11.5173 15.6168 11.6274 15.71 11.72L19 14.9999L9 14.9999C8.73478 14.9999 8.48043 15.1053 8.29289 15.2928C8.10536 15.4804 8 15.7347 8 15.9999C8 16.2652 8.10536 16.5195 8.29289 16.7071C8.48043 16.8946 8.73478 16.9999 9 16.9999Z"
-                            fill="#CC00C1"
-                          />
-                        </svg>
-                      </div>
-                    </Link>
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="32"
+                              y="32"
+                              width="32"
+                              height="32"
+                              rx="16"
+                              transform="rotate(180 32 32)"
+                              fill="#FAE5F9"
+                            />
+                            <path
+                              d="M9 16.9999L19 16.9999L15.71 20.2899C15.6163 20.3829 15.5419 20.4935 15.4911 20.6154C15.4403 20.7372 15.4142 20.8679 15.4142 20.9999C15.4142 21.132 15.4403 21.2627 15.4911 21.3845C15.5419 21.5064 15.6163 21.617 15.71 21.7099C15.8974 21.8962 16.1508 22.0007 16.415 22.0007C16.6792 22.0007 16.9326 21.8962 17.12 21.7099L21.41 17.4099C21.7856 17.0366 21.9978 16.5295 22 15.9999C21.9951 15.4738 21.7832 14.9708 21.41 14.5999L17.12 10.3C17.0268 10.2074 16.9162 10.1341 16.7946 10.0842C16.6731 10.0344 16.5429 10.0089 16.4115 10.0094C16.2801 10.0099 16.1501 10.0362 16.0288 10.0869C15.9076 10.1376 15.7976 10.2117 15.705 10.305C15.6124 10.3982 15.5391 10.5088 15.4893 10.6303C15.4394 10.7519 15.414 10.8821 15.4144 11.0135C15.4149 11.1449 15.4412 11.2749 15.492 11.3961C15.5427 11.5173 15.6168 11.6274 15.71 11.72L19 14.9999L9 14.9999C8.73478 14.9999 8.48043 15.1053 8.29289 15.2928C8.10536 15.4804 8 15.7347 8 15.9999C8 16.2652 8.10536 16.5195 8.29289 16.7071C8.48043 16.8946 8.73478 16.9999 9 16.9999Z"
+                              fill="#CC00C1"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                    </form>
+
+                    {/* <Link href={`/create-card/${savedcards}`}></Link> */}
                   </div>
                 </div>
               </div>

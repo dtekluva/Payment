@@ -1,16 +1,57 @@
+import * as React from 'react'
 import type { NextPage } from 'next'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import PinInput from 'react-pin-input'
+import { useInvoiceRef } from '@/features/invoice'
+import { usePostPassword } from '@/features/password'
+
+type FormValues = {
+  email: string
+  transaction_pin: string
+  token: string
+}
 
 const CreatePin: NextPage = () => {
+  const router = useRouter()
+  const { createpin = [] } = router.query
+
+  const invoiceReferenece = createpin[0]
+  const otpToken = createpin[1]
+
+  const [password, setPassword] = React.useState('')
+
+  const { data: viewInvoiceData } = useInvoiceRef(invoiceReferenece as string)
+
+  const { mutate: postPassword } = usePostPassword()
+
   const handleChange = (value: string) => {
     console.log(value)
   }
 
   const handleComplete = (value: string) => {
-    console.log(value)
+    setPassword(value)
+  }
+
+  const { handleSubmit, reset } = useForm<FormValues>({})
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const updatedData = {
+      ...data,
+      email: viewInvoiceData?.client_email,
+      transaction_pin: password,
+      token: otpToken,
+    }
+
+    postPassword(updatedData, {
+      onSuccess: ({ data: getMessage }) => {
+        console.log(getMessage.message)
+        router.push('/transaction-success')
+        reset()
+      },
+    })
   }
 
   return (
@@ -24,19 +65,7 @@ const CreatePin: NextPage = () => {
                 {' '}
                 <div className="">
                   {/* {isPostPosApplicationFormLoading && <FullPageLoader />} */}
-
-                  {/* <div className="flex h-full w-full flex-col items-center justify-center px-5 pt-16 pb-5 md:mb-[89px] md:px-16 md:pt-[106px]">
-                    <h1 className="mb-4 font-sans text-2xl font-semibold text-employment-blue-light md:mb-6 md:text-[33px]">
-                      Input your email to continue
-                    </h1>
-                    <p className="max-w-[732px] font-sans font-normal text-[#646464] md:text-[19px]">
-                      POS Registration Form. Please note that the POS is not for sale. However, a
-                      caution fee will be required. The POS remains the property of the issuing
-                      company but after 2 years of active use, the ownership will be transferred.
-                    </p>
-                  </div> */}
-
-                  <form action="">
+                  <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
                     <div className="mt-4 flex h-full max-h-[800px] w-full flex-col items-start justify-start px-4">
                       <h1 className=" mt-6 font-sans text-[18px] font-semibold text-black md:mb-6 md:text-[33px]">
                         Finally, create your transaction PIN
@@ -66,14 +95,14 @@ const CreatePin: NextPage = () => {
                         />
                       </div>
 
-                      <Link href="/confirm-pin">
-                        <button
-                          type="submit"
-                          className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
-                        >
-                          Continue
-                        </button>
-                      </Link>
+                      {/* <Link href="/confirm-pin"> */}
+                      <button
+                        type="submit"
+                        className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
+                      >
+                        Continue
+                      </button>
+                      {/* </Link> */}
                     </div>
                   </form>
                 </div>

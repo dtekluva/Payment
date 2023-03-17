@@ -122,9 +122,9 @@ const Receipt: NextPage = () => {
                       </div>
                     </div>
 
-                    <Link href="/confirm-pin">
+                    <Link href="/downloadapp">
                       <button
-                        type="submit"
+                        type="button"
                         className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
                       >
                         Done

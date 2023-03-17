@@ -12,11 +12,9 @@ interface NotificationModalProps {
   width?: string
   className?: string
   allowDismiss?: boolean
-  invoiceReferenece?: string
-  otpToken?: string
 }
 
-export const NotificationCreateCardModal: React.FunctionComponent<NotificationModalProps> = ({
+export const NotificationModalPayment: React.FunctionComponent<NotificationModalProps> = ({
   headingText,
   type,
   isModalOpen,
@@ -25,13 +23,15 @@ export const NotificationCreateCardModal: React.FunctionComponent<NotificationMo
   className = '',
   closeModal,
   allowDismiss = false,
-  invoiceReferenece,
-  otpToken,
 }) => {
   const router = useRouter()
 
   const handleClickResponse = () => {
-    router.push(`/create-card/${invoiceReferenece}/${otpToken}`)
+    if (type === 'success') {
+      router.push('/transaction-success')
+    } else {
+      router.back()
+    }
   }
   return (
     <DialogOverlay
@@ -71,10 +71,10 @@ export const NotificationCreateCardModal: React.FunctionComponent<NotificationMo
 
             <div className="relative bg-white text-sm">
               <p className="w-full max-w-[361px] px-8 py-5 text-neutral-500">
-                You can go ahead and close this alert by clicking the button below.
+                Fund card to click button to choose another card .
               </p>
 
-              {type === 'success' && (
+              {type === 'success' && ( 
                 <svg
                   width="80"
                   height="80"

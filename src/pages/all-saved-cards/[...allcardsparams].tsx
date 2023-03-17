@@ -50,7 +50,8 @@ const AllCards: NextPage = () => {
                               <li key={`${id}`} className="mt-4 w-full">
                                 <button
                                   onClick={() =>
-                                    console.log(id, invoiceReferenece, card_last_four_digit)
+                                    // console.log(id, invoiceReferenece, card_last_four_digit)
+                                    router.push(`/complete-payment/${invoiceReferenece}/${id}`)
                                   }
                                   className="flex h-[auto] w-full items-center gap-6 rounded-lg border bg-white px-[18px] py-[24px] text-start"
                                 >

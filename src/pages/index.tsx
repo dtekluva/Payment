@@ -1,75 +1,32 @@
 import type { NextPage } from 'next'
-import { useForm } from 'react-hook-form'
-import Link from 'next/link'
+import QRCode from 'react-qr-code'
 
-import { EmploymentFormsHeader } from '@/components/layout'
-import { InputError, InputField } from '@/components/elements'
+import { PayLinkHeader } from '@/components/layout'
 
-const Index: NextPage = () => {
-  type SendMessageDto = {
-    email: string
-  }
-
-  const {
-    register,
-    // handleSubmit,
-    formState: { errors },
-  } = useForm<SendMessageDto>({
-    mode: 'onTouched',
-  })
+const PayLink: NextPage = () => {
   return (
     <>
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
         <div className="mx-auto h-screen w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
-          <EmploymentFormsHeader />
+          <PayLinkHeader />
           <div className="h-full xl:flex xl:justify-evenly">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">
               <div className="mx-auto  w-full  bg-[#F9FBFF]">
                 {' '}
-                <div className="">
-                  {/* {isPostPosApplicationFormLoading && <FullPageLoader />} */}
+                <div className="mt-32 flex h-full w-full flex-col items-center justify-center">
+                  <div className="qr-bg center rounded-xl bg-white bg-[url('/images/qrbg.png')] bg-contain  p-6">
+                    {' '}
+                    <QRCode
+                      size={256}
+                      style={{ height: 'auto', maxWidth: '210px', width: '100%' }}
+                      value={'https://payments.magentapass.co/'}
+                      viewBox={`0 0 256 256`}
+                    />
+                  </div>
 
-                  {/* <div className="flex h-full w-full flex-col items-center justify-center px-5 pt-16 pb-5 md:mb-[89px] md:px-16 md:pt-[106px]">
-                    <h1 className="mb-4 font-sans text-2xl font-semibold text-employment-blue-light md:mb-6 md:text-[33px]">
-                      Input your email to continue
-                    </h1>
-                    <p className="max-w-[732px] font-sans font-normal text-[#646464] md:text-[19px]">
-                      POS Registration Form. Please note that the POS is not for sale. However, a
-                      caution fee will be required. The POS remains the property of the issuing
-                      company but after 2 years of active use, the ownership will be transferred.
-                    </p>
-                  </div> */}
-
-                  <form action="">
-                    <div className="mt-[129px] flex h-full max-h-[800px] w-full flex-col items-center justify-center px-4">
-                      <h1 className="mb-4 font-sans text-[18px] font-semibold text-black md:mb-6 md:text-[33px]">
-                        Input your email to continue
-                      </h1>
-
-                      <InputField
-                        autoFocus={true}
-                        id="email"
-                        type="email"
-                        placeholder="e.g magenta@example.com"
-                        className="h-12 rounded-lg border-2 border-[#E0E0E0] bg-[#E2E6EE]"
-                        registration={register('email', {
-                          required: true,
-                        })}
-                      />
-                      {errors.email && (
-                        <InputError text={errors.email.message || 'This field is required'} />
-                      )}
-
-                      <Link href="/invoice">
-                        <button
-                          type="submit"
-                          className="mt-8 w-full rounded-xl bg-[#4D00AC] py-[13px] text-white"
-                        >
-                          Make payment
-                        </button>
-                      </Link>
-                    </div>
-                  </form>
+                  <p className="mt-12 font-sans text-base font-medium text-black">
+                    Scan to make payment
+                  </p>
                 </div>
               </div>
             </div>
@@ -78,8 +35,14 @@ const Index: NextPage = () => {
           {/* <EmploymentFormsFooter /> */}
         </div>
       </div>
+
+      <style jsx>{`
+        .qr-bg {
+          box-shadow: 2px 2px 7px rgba(157, 157, 157, 0.19), -2px -2px 7px rgba(157, 157, 157, 0.19);
+        }
+      `}</style>
     </>
   )
 }
 
-export default Index
+export default PayLink

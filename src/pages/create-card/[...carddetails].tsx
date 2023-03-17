@@ -8,11 +8,12 @@ import { useInvoiceRef } from '@/features/invoice'
 
 const CardDetails: NextPage = () => {
   const router = useRouter()
-  const { carddetails } = router.query
+  const { carddetails = [] } = router.query
 
-  const { data: viewInvoiceData } = useInvoiceRef(carddetails as string)
+  const invoiceReferenece = carddetails[0]
+  const otpToken = carddetails[1]
 
-  console.log(viewInvoiceData?.client_email, '')
+  const { data: viewInvoiceData } = useInvoiceRef(invoiceReferenece as string)
 
   const config = {
     reference: new Date().getTime().toString(),
@@ -30,7 +31,7 @@ const CardDetails: NextPage = () => {
   // you can call this function anything
   const onSuccess = (reference: unknown) => {
     console.log(reference)
-    router.push('/create-pin')
+    router.push(`/create-pin/${invoiceReferenece}/${otpToken}`)
   }
 
   // you can call this function anything
@@ -121,7 +122,6 @@ const CardDetails: NextPage = () => {
               </div>
             </div>
           </div>
-
           {/* <EmploymentFormsFooter /> */}
         </div>
       </div>

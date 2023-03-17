@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useOtpPin } from '@/features/otpPin'
 import { useNotificationModalControl } from '@/hooks'
-import { NotificationCreateCardModal, NotificationSavedCardModal } from '@/components/elements'
+import { NotificationCreateCardModal } from '@/components/elements'
 
 const ConfirmPin: NextPage = () => {
   const router = useRouter()
@@ -17,13 +17,6 @@ const ConfirmPin: NextPage = () => {
     isModalOpen: isSuccessModalOpen,
     closeModal: closeSuccessModal,
     openModal: openSuccessModal,
-  } = useNotificationModalControl()
-
-  const {
-    message: successSavedCardModalMessage,
-    isModalOpen: isSuccessSavedCardModalOpen,
-    closeModal: closeSuccessSavedCardModal,
-    openModal: openSuccessSavedCardModal,
   } = useNotificationModalControl()
 
   const [otpToken, setOtpToken] = React.useState('')
@@ -41,11 +34,11 @@ const ConfirmPin: NextPage = () => {
 
   React.useEffect(() => {
     if (viewCards?.length == 0) {
-      openSuccessModal("You don't have any cards saved, click to create card...")
+      openSuccessModal('Proceed to create card...')
     } else if (viewCards?.length >= 1) {
-      openSuccessSavedCardModal('Your account has been verified...')
+      openSuccessModal('Proceed to create card...')
     }
-  }, [openSuccessModal, openSuccessSavedCardModal, otpToken, otppin, router, viewCards?.length])
+  }, [openSuccessModal, otpToken, otppin, router, viewCards?.length])
 
   return (
     <>
@@ -56,16 +49,6 @@ const ConfirmPin: NextPage = () => {
         allowDismiss
         closeModal={closeSuccessModal}
         isModalOpen={isSuccessModalOpen}
-        invoiceReferenece={otppin as string}
-        otpToken={otpToken}
-      />
-      <NotificationSavedCardModal
-        headingText={successSavedCardModalMessage}
-        label={successSavedCardModalMessage}
-        type="success"
-        allowDismiss
-        closeModal={closeSuccessSavedCardModal}
-        isModalOpen={isSuccessSavedCardModalOpen}
         invoiceReferenece={otppin as string}
         otpToken={otpToken}
       />
@@ -86,7 +69,7 @@ const ConfirmPin: NextPage = () => {
                         Enter OTP PIN
                       </h1>
                       <p className="mt-2 font-sans text-[13px] font-medium text-[#172B4D] ">
-                        Kindly enter OTP pin to continue transaction
+                        Kindly enter OTP pin to create card
                       </p>
 
                       <div className="mt-6 flex w-full items-center justify-center">
