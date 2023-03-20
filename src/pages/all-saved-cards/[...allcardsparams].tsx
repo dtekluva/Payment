@@ -5,23 +5,54 @@ import { useRouter } from 'next/router'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useOtpPin } from '@/features/otpPin'
+import { useNotificationModalControl } from '@/hooks'
+import { NotificationModalInvalidOtp } from '@/components/elements'
+import { useInvoiceRef } from '@/features/invoice'
 
 const AllCards: NextPage = () => {
   const router = useRouter()
   const { allcardsparams = [] } = router.query
 
+  const {
+    message: successModalMessage,
+    isModalOpen: isSuccessModalOpen,
+    closeModal: closeSuccessModal,
+    openModal: openSuccessModal,
+  } = useNotificationModalControl()
+
   const invoiceReferenece = allcardsparams[0]
   const otpToken = allcardsparams[1]
 
   console.log(invoiceReferenece, otpToken, 'invoice and otp')
+  const { data: viewInvoiceData } = useInvoiceRef(invoiceReferenece as string)
 
-  const { data: viewCards } = useOtpPin(invoiceReferenece as string, otpToken)
-  console.log(viewCards, 'view params cards')
+  const { data: viewCards, error } = useOtpPin(invoiceReferenece as string, otpToken)
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  const errorMessage = error?.response?.data.message
+  React.useEffect(() => {
+    if (errorMessage === 'Invalid OTP, try again') {
+      // router.push(`/cards/${invoiceReferenece}`)
+      openSuccessModal('Invalid OTP, try again ')
+    }
+  }, [errorMessage, invoiceReferenece, openSuccessModal, router, viewCards])
 
   return (
     <>
+      <NotificationModalInvalidOtp
+        headingText={successModalMessage}
+        label={successModalMessage}
+        type="success"
+        allowDismiss
+        closeModal={closeSuccessModal}
+        isModalOpen={isSuccessModalOpen}
+        invoiceReferenece={invoiceReferenece as string}
+        email={viewInvoiceData?.client_email}
+      />
+
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
-        <div className="mx-auto h-full w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
+        <div className="mx-auto h-full w-full  max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
           <EmploymentFormsHeader />
           <div className="h-full pb-6 xl:flex xl:justify-evenly">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">

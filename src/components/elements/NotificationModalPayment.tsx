@@ -12,6 +12,8 @@ interface NotificationModalProps {
   width?: string
   className?: string
   allowDismiss?: boolean
+  transactionRef?: string
+  notice?: string
 }
 
 export const NotificationModalPayment: React.FunctionComponent<NotificationModalProps> = ({
@@ -23,14 +25,17 @@ export const NotificationModalPayment: React.FunctionComponent<NotificationModal
   className = '',
   closeModal,
   allowDismiss = false,
+  transactionRef,
+  notice,
 }) => {
   const router = useRouter()
 
   const handleClickResponse = () => {
     if (type === 'success') {
-      router.push('/transaction-success')
+      router.push(`/transaction-success/${transactionRef}`)
     } else {
-      router.back()
+      // router.back()
+      closeModal()
     }
   }
   return (
@@ -70,11 +75,9 @@ export const NotificationModalPayment: React.FunctionComponent<NotificationModal
             </header>
 
             <div className="relative bg-white text-sm">
-              <p className="w-full max-w-[361px] px-8 py-5 text-neutral-500">
-                Fund card to click button to choose another card .
-              </p>
+              <p className="w-full max-w-[361px] px-8 py-5 text-neutral-500">{notice}</p>
 
-              {type === 'success' && ( 
+              {type === 'success' && (
                 <svg
                   width="80"
                   height="80"

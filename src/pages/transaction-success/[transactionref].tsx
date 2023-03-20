@@ -1,23 +1,18 @@
 import type { NextPage } from 'next'
-import { useForm } from 'react-hook-form'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import moment from 'moment'
 
 import { EmploymentFormsHeader } from '@/components/layout'
+import { useInvoiceRef } from '@/features/invoice'
 // import { InputRadio, InputError } from '@/components/elements'
 
 const TransactionSuccess: NextPage = () => {
-  type SendMessageDto = {
-    save_card: string
-  }
+  const router = useRouter()
+  const { transactionref } = router.query
 
-  const {
-    register,
-    // control,
-    // handleSubmit,
-    // formState: { errors },
-  } = useForm<SendMessageDto>({
-    mode: 'onTouched',
-  })
+  const { data: viewInvoiceData } = useInvoiceRef(transactionref as string)
+  console.log(viewInvoiceData, 'ksmjladkj')
 
   return (
     <>
@@ -57,14 +52,18 @@ const TransactionSuccess: NextPage = () => {
                       <h1 className="text-center text-xl font-semibold text-[#16020E]">
                         Transaction Successful!
                       </h1>
-                      <p className="mt-2 text-center text-[13px] text-[#757575]">Shoprite Lekki</p>
+                      <p className="mt-2 text-center text-[13px] text-[#757575]">
+                        {' '}
+                        {viewInvoiceData?.merchant?.company_name}
+                      </p>
                       <div className="mt-3 h-[1px] w-[328px] max-w-[328px] bg-[#C7AFE4]"></div>{' '}
                       <h1 className="mt-6 text-center text-[13px] font-semibold text-[#16020E]">
-                        Amount paid <span className="text-[#CC00C1]">₦18,000</span>
+                        Amount paid{' '}
+                        <span className="text-[#CC00C1]">₦{viewInvoiceData?.amount}</span>
                       </h1>
                       <p className="mt-[12px] text-center text-xs font-medium text-[#4E00AD]">
                         {' '}
-                        25th September, 2022 at 14:24
+                        {moment(viewInvoiceData?.paid_at).format('MMMM Do YYYY, h:mm:ss a')}
                       </p>
                     </div>
 
@@ -77,24 +76,14 @@ const TransactionSuccess: NextPage = () => {
                         Done
                       </button>
                     </Link>
-                    <Link href="/receipt">
+                    {/* <Link href="/receipt">
                       <button
                         type="submit"
                         className="mt-4 w-full rounded-xl border border-[#4D00AC] py-[13px] font-medium text-[#4E00AD]"
                       >
                         View Receipt
                       </button>
-                    </Link>
-
-                    <div className="mt-2 flex w-full items-center">
-                      <input
-                        type="checkbox"
-                        placeholder="Save this card"
-                        {...register('save_card', {})}
-                        className="mx-3"
-                      />
-                      <p className="text-[13px] font-medium">Save this card</p>
-                    </div>
+                    </Link> */}
                   </div>
                 </div>
               </div>

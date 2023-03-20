@@ -39,6 +39,7 @@ const CreatePin: NextPage = () => {
   } = useNotificationModalControl()
 
   const [password, setPassword] = React.useState('')
+  const [notice, setNotice] = React.useState('')
 
   const handleChange = (value: string) => {
     console.log(value)
@@ -72,6 +73,20 @@ const CreatePin: NextPage = () => {
         // launchNotification('error', errorMessage as string)
 
         openErrorModal(errorMessage as string)
+
+        if (errorMessage == 'Invalid PIN') {
+          closeErrorModal()
+          setNotice('input correct pin')
+        } else if (errorMessage == 'Insufficient funds') {
+          setNotice('input correct pin')
+          router.back()
+        } else if (errorMessage?.includes('Charge attempt cannot be fulfilled until')) {
+          setNotice('Oops wait for duration or select another card')
+
+          setTimeout(() => {
+            router.back()
+          }, 2000)
+        }
       },
     })
   }
@@ -85,11 +100,13 @@ const CreatePin: NextPage = () => {
         allowDismiss
         closeModal={closeSuccessModal}
         isModalOpen={isSuccessModalOpen}
+        transactionRef={invoiceReferenece}
       />
       <NotificationModalPayment
         headingText={errorModalMessage}
         label={errorModalMessage}
         type="error"
+        notice={notice}
         allowDismiss
         closeModal={closeErrorModal}
         isModalOpen={isErrorModalOpen}

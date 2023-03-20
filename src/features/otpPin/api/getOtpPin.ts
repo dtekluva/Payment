@@ -9,6 +9,7 @@ import { businessAxios } from '@/lib/axios'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getOtpPin = async (invoiceRef: string, otpPin: string): Promise<any> => {
   const { data } = await businessAxios.get(`business/has_cards_web/${invoiceRef}/${otpPin}`)
+  console.log(data, 'pin absemksadm')
   return data
 }
 
@@ -16,4 +17,8 @@ export const useOtpPin = (invoiceRef = '', otpPin = '') =>
   useQuery(['invoice-reference', otpPin], () => getOtpPin(invoiceRef, otpPin), {
     // The query  will not execute until the selected App ID exists
     enabled: !!invoiceRef,
+
+    onSuccess: (data) => {
+      console.log(data, 'onsuccess Itno')
+    },
   })
