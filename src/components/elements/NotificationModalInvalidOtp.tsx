@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
 import clsx from 'clsx'
-import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { usePostEmail } from '@/features/email'
@@ -37,7 +36,6 @@ export const NotificationModalInvalidOtp: React.FunctionComponent<NotificationMo
   invoiceReferenece,
   email,
 }) => {
-  const router = useRouter()
   const {
     message: successModalMessage,
     isModalOpen: isSuccessModalOpen,
