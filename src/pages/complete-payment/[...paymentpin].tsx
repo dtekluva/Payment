@@ -88,7 +88,7 @@ const CreatePin: NextPage = () => {
 
           setTimeout(() => {
             router.back()
-          }, 2000)
+          }, 5000)
         }
       },
     })
