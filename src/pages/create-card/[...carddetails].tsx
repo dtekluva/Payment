@@ -16,12 +16,12 @@ const CardDetails: NextPage = () => {
   const { data: viewInvoiceData } = useInvoiceRef(invoiceReferenece as string)
 
   const config = {
-    reference: new Date().getTime().toString(),
+    reference: invoiceReferenece,
     email: viewInvoiceData?.client_email,
     amount: viewInvoiceData?.billed_amount * 100,
     publicKey: 'pk_live_c2948535846ef1012400bfeabf45ab02fe350e8c',
     currency: 'NGN',
-    channel: ['card'],
+    channel: 'card',
     metadata: {
       reason: '',
       source: 'web',
@@ -67,7 +67,7 @@ const CardDetails: NextPage = () => {
   return (
     <>
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
-        <div className="mx-auto h-full w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff] pb-8">
+        <div className="mx-auto md:h-screen h-full w-full  max-w-[500px] flex-shrink-0 bg-[#ffffff]">
           <EmploymentFormsHeader />
           <div className="h-full xl:flex xl:justify-evenly">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">

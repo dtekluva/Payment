@@ -1,11 +1,18 @@
+import * as React from 'react';
 import type { NextPage } from 'next'
 import QRCode from 'react-qr-code'
+import { AnimatePresence } from 'framer-motion'
 
 import { PayLinkHeader } from '@/components/layout'
+import { Preloader } from '@/components/elements'
 
 const PayLink: NextPage = () => {
+  const [isPreloaderDisplayed, setIsPreloaderDisplayed] = React.useState(true)
   return (
     <>
+      <AnimatePresence onExitComplete={() => null}>
+        {isPreloaderDisplayed && <Preloader setIsPreloaderDisplayed={setIsPreloaderDisplayed} />}
+      </AnimatePresence>
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
         <div className="mx-auto h-screen w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
           <PayLinkHeader />

@@ -11,51 +11,45 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'lottery-section': "url('/images/lottery-bg.jpg')",
-        headphone: "url('/images/headphone.png')",
-        'iphone-mockup-half': "url('/images/personal/iPhone-13-mockup-half.png')",
-        'iphone-mockup-with-dashboard': 'url("/images/personal/iphone-12-slant-mock-up.png")',
-        'iphone-mockup-with-dashboard-half': 'url("/images/half-iphone.png")',
-        'circle-pattern': 'url("/images/about/circle-pattern.png")',
-      },
+      backgroundImage: () => ({
+        'magenta-gradient': `linear-gradient(140deg, hsl(275deg 53% 55%) 0%, hsl(274deg 53% 55%) 7%, hsl(274deg 53% 55%) 14%, hsl(273deg 53% 55%) 21%, hsl(270deg 50% 55%) 29%, hsl(264deg 44% 56%) 36%, hsl(258deg 38% 56%) 43%, hsl(252deg 32% 55%) 50%, hsl(259deg 39% 56%) 57%, hsl(265deg 45% 56%) 64%, hsl(272deg 51% 55%) 71%, hsl(276deg 54% 54%) 79%, hsl(276deg 54% 54%) 86%, hsl(276deg 54% 54%) 93%, hsl(276deg 54% 54%) 100%)`,
+      }),
       colors: {
-        primary: {
-          100: '#073D9F',
-          200: '#5CB2FC',
-          300: '#14a8fb',
+        'magenta-violet': {
+          50: '#EEE8F8',
+          100: '#C7AFE4',
+          200: '#AF8BDA',
+          300: '#8652C7',
+          400: '#7132BD',
+          500: '#4E00AD',
+          600: '#47009E',
+          700: '#37007A',
+          800: '#2C0061',
+          900: '#200047',
         },
-        secondary: {},
-        gray: {
-          50: '#F9FAFB',
-          150: '#F4F6F6',
-          250: '#FDFDFD',
-          350: '#F5F5F5',
-          450: '#646464',
-          550: '#4e4e4e',
-          650: '#473B35',
-          750: '#818181',
-          850: '#272727',
+        'magenta-pink': {
+          50: '#FAE5F9',
+          100: '#EFAFEB',
+          200: '#E88CE2',
+          300: '#DD55D4',
+          400: '#D733CE',
+          500: '#CC00C1',
+          600: '#B800AE',
+          700: '#8F0088',
+          800: '#70006B',
+          900: '#570052',
         },
-        'text-dark': {
-          DEFAULT: '#263238',
-        },
-        'liberty-blue': {
-          light: '#107EE2',
-          DEFAULT: '#032282',
-        },
-        'employment-blue': {
-          light: '#0D7CDC',
-          DEFAULT: '#004067',
-        },
-        'liberty-teal': {
-          lightest: '#F4F9FF',
-          light: '#E8F3FF',
-          DEFAULT: '#032282',
-        },
-        'liberty-green': {
-          light: '#1CCA00',
-          DEFAULT: '#18A201',
+        'magenta-neutral': {
+          50: ' #FAFAFA',
+          100: '#F7F9FA',
+          200: '#F4F5F7',
+          300: '#E2E6EE',
+          400: '#ADB3BD',
+          500: '#93A3C0',
+          600: '#6B778C',
+          700: '#505F79',
+          800: '#172B4D',
+          900: '#031B4A',
         },
       },
       fontFamily: {
