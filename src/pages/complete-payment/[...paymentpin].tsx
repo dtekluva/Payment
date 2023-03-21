@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import type { AxiosError } from 'axios'
+import { AnimatePresence } from 'framer-motion'
 
 import { EmploymentFormsHeader } from '@/components/layout'
 import PinInput from 'react-pin-input'
@@ -10,6 +11,7 @@ import { usePostCardPayment } from '@/features/card-payment'
 import { NotificationModalPayment } from '@/components/elements'
 import { useNotificationModalControl } from '@/hooks'
 import { formatAxiosErrorMessage } from '@/utils'
+import { Preloader } from '@/components/elements'
 
 type FormValues = {
   transaction_ref: string
@@ -20,6 +22,7 @@ type FormValues = {
 const CreatePin: NextPage = () => {
   const router = useRouter()
   const { paymentpin = [] } = router.query
+  const [isPreloaderDisplayed, setIsPreloaderDisplayed] = React.useState(true)
 
   const invoiceReferenece = paymentpin[0]
   const cardid = paymentpin[1]
@@ -50,7 +53,7 @@ const CreatePin: NextPage = () => {
 
   const { handleSubmit, reset } = useForm<FormValues>({})
 
-  const { mutate: postCardPayment } = usePostCardPayment()
+  const { mutate: postCardPayment, isLoading: isPostCardPayment } = usePostCardPayment()
 
   console.log()
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -93,6 +96,11 @@ const CreatePin: NextPage = () => {
 
   return (
     <>
+      {isPostCardPayment && (
+        <AnimatePresence onExitComplete={() => null}>
+          {isPreloaderDisplayed && <Preloader setIsPreloaderDisplayed={setIsPreloaderDisplayed} />}
+        </AnimatePresence>
+      )}
       <NotificationModalPayment
         headingText={successModalMessage}
         label={successModalMessage}

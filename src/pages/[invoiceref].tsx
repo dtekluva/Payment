@@ -8,13 +8,20 @@ import moment from 'moment'
 import { EmploymentFormsHeader } from '@/components/layout'
 import { useModalControl } from '@/hooks'
 import { PaymentInvoice, useInvoiceRef } from '@/features/invoice'
+import { AnimatePresence } from 'framer-motion'
 // import { formatShortDateTime } from '@/utils'
+
+import { Preloader } from '@/components/elements'
 
 const Invoice: NextPage = () => {
   const router = useRouter()
   const { invoiceref } = router.query
 
-  const { data: viewInvoiceData } = useInvoiceRef(invoiceref as string)
+  const [isPreloaderDisplayed, setIsPreloaderDisplayed] = React.useState(true)
+
+  const { data: viewInvoiceData, isLoading: isViewInvoiceData } = useInvoiceRef(
+    invoiceref as string
+  )
   console.log(viewInvoiceData, 'ksmjladkj')
 
   const {
@@ -23,10 +30,18 @@ const Invoice: NextPage = () => {
     openModal: openSuccessModal,
   } = useModalControl()
 
+  if (isViewInvoiceData) {
+    return (
+      <AnimatePresence onExitComplete={() => null}>
+        {isPreloaderDisplayed && <Preloader setIsPreloaderDisplayed={setIsPreloaderDisplayed} />}
+      </AnimatePresence>
+    )
+  }
+
   return (
     <>
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
-        <div className="mx-auto md:h-screen h-full w-full  max-w-[500px] flex-shrink-0 bg-[#ffffff]">
+        <div className="mx-auto h-full w-full max-w-[500px]  flex-shrink-0 bg-[#ffffff] md:h-screen">
           <EmploymentFormsHeader />
           <div className="h-full xl:flex xl:justify-evenly">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">
