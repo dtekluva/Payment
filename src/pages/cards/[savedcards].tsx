@@ -86,16 +86,16 @@ const SavedCards: NextPage = () => {
         invoiceReferenece={savedcards as string}
       />
 
-      <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
-        <div className="mx-auto h-full w-full max-w-[500px]  flex-shrink-0 bg-[#ffffff] md:h-screen">
+      <div className="h-full w-full bg-[#4d00ac]">
+        <div className="mx-auto h-full w-full max-w-[400px] flex-shrink-0 bg-[#ffffff] md:h-screen">
           <EmploymentFormsHeader />
-          <div className="h-full xl:flex xl:justify-evenly">
+          <div className="">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">
               <div className="mx-auto  w-full  bg-[#F9FBFF]">
                 {' '}
                 <div className="">
                   <div className="mt-4 flex h-full max-h-[800px] w-full flex-col items-start justify-start px-4">
-                    <h1 className=" mt-6 font-sans text-[18px] font-semibold text-black md:mb-6 md:text-[33px]">
+                    <h1 className=" mt-6 font-sans text-[18px] font-semibold text-black md:mb-6 md:text-[20px]">
                       Choose payment method
                     </h1>
 

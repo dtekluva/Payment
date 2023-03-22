@@ -16,7 +16,7 @@ export const EmploymentFormsHeader: React.FunctionComponent = () => {
 
             <Link href="/">
               <div className="flex flex-col items-end">
-                <a className="text-white md:text-[23px]">About Us</a>
+                <a className="text-white md:text-[17px] whitespace-nowrap">About Us</a>
                 <div className="h-[1px] w-[43px] bg-[#E88CE2]"></div>
               </div>
             </Link>

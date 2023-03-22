@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import type { NextPage } from 'next'
 import QRCode from 'react-qr-code'
 import { AnimatePresence } from 'framer-motion'
@@ -16,7 +16,7 @@ const PayLink: NextPage = () => {
       <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
         <div className="mx-auto h-screen w-full max-w-[1000px] flex-shrink-0 bg-[#ffffff]">
           <PayLinkHeader />
-          <div className="h-full xl:flex xl:justify-evenly">
+          <div className="">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">
               <div className="mx-auto  w-full  bg-[#F9FBFF]">
                 {' '}

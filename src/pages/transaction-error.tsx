@@ -21,10 +21,10 @@ const TransactionError: NextPage = () => {
 
   return (
     <>
-      <div className="h-full w-full overflow-hidden bg-[#4d00ac]">
-        <div className="mx-auto md:h-screen h-full w-full  max-w-[500px] flex-shrink-0 bg-[#ffffff]">
+      <div className="h-full w-full bg-[#4d00ac]">
+        <div className="mx-auto h-full w-full max-w-[400px] flex-shrink-0 bg-[#ffffff] md:h-screen">
           <EmploymentFormsHeader />
-          <div className="h-full xl:flex xl:justify-evenly">
+          <div className="">
             <div className="mx-auto w-full max-w-[1000px] flex-shrink-0">
               <div className="mx-auto  w-full  bg-[#F9FBFF]">
                 {' '}
