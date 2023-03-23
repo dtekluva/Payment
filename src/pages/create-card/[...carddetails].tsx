@@ -16,7 +16,7 @@ const CardDetails: NextPage = () => {
   const { data: viewInvoiceData } = useInvoiceRef(invoiceReferenece as string)
 
   const config = {
-    reference: invoiceReferenece + '+++' + new Date().getTime().toString(),
+    reference: invoiceReferenece + '-----------------' + new Date().getTime().toString(),
     email: viewInvoiceData?.client_email,
     amount: viewInvoiceData?.billed_amount * 100,
     publicKey: 'pk_live_c2948535846ef1012400bfeabf45ab02fe350e8c',
