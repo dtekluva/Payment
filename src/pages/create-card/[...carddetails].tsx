@@ -20,7 +20,7 @@ const CardDetails: NextPage = () => {
     email: viewInvoiceData?.client_email,
     amount: viewInvoiceData?.billed_amount * 100,
     publicKey: 'pk_live_c2948535846ef1012400bfeabf45ab02fe350e8c',
-    currency: 'NGN',
+    currency: 'USD',
     channel: 'card',
     metadata: {
       reason: '',
